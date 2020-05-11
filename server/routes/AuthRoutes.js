@@ -11,5 +11,6 @@ router.post('/login', AuthController.UserLogin)
 
 var passport = require('passport');
 router.post('/user' , [passport.authenticate('jwt', {session: false}) ] , AuthController.GetUser)
+router.post('/user/update' , [passport.authenticate('jwt', {session: false}) ] , AuthController.updateUser)
 
 module.exports = router;
