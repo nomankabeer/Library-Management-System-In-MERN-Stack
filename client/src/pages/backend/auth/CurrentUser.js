@@ -32,7 +32,25 @@ class CurrentUser extends Component {
 		this.setState({ [name]: value });
 	}
 
-	
+	sendUpdateRequest = async (e) => {
+		return await updateUserProfile(this.state.email, this.state.username);
+	}
+
+	handleSubmit = async (e) => {
+		e.preventDefault();
+		this.setState({ loading: true });;
+		this.sendUpdateRequest().then(response => {
+			if (response.success === false) {
+				window.location.href = '/logout';
+			}
+			else if (response.success === true) {
+				this.setState({ done: true });
+				localStorage.setItem('user', JSON.stringify(response.data.getData()));
+				this.notification({ type: "success", message: "Profile updated" });
+			}
+		});
+		this.setState({ loading: false });
+	};
 
 	notification(status) {
 		store.addNotification({
